@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetFriendly 宠物友好指南 - AI 智能体宠物友好指南</title>
+    <link rel="icon" href="https://rustfs.petfriendly.icu/jiaxu-technology/120.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700&family=JetBrains+Mono:wght@300;500&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-green: #76A665;
+            --brand-dark: #1A1A1A;
+            --bg-light: #F9F9F7;
+            --border-color: #E0E0D8;
+        }
+        body {
+            font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Inter', 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-light);
+            color: #4A4A4A;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .interactive-btn {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            touch-action: manipulation;
+        }
+        .interactive-btn:hover {
+            transform: translateY(-4px);
+            filter: brightness(105%);
+            box-shadow: 0 15px 30px rgba(118, 166, 101, 0.15);
+        }
+        .interactive-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        @media (min-width: 768px) {
+            .audience-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+            }
+        }
+
+        .audience-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-item { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal-item.visible { opacity: 1; transform: translateY(0); }
+
+        .ios-banner {
+            background: white;
+            border-radius: 32px;
+            padding: 40px 24px;
+            border: 2px solid var(--brand-green);
+            box-shadow: 0 40px 80px rgba(118, 166, 101, 0.08);
+        }
+        @media (min-width: 768px) {
+            .ios-banner { border-radius: 48px; padding: 80px 60px; }
+        }
+
+        .platform-card-future {
+            opacity: 0.3;
+            filter: grayscale(100%) blur(2px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .platform-card-future.active {
+            opacity: 1;
+            filter: grayscale(0%) blur(0px);
+            transform: translateY(-5px);
+        }
+
+        .native-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            background: rgba(118, 166, 101, 0.1);
+            color: var(--brand-green);
+            border-radius: 99px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+
+        .turf-wave { fill: var(--brand-green); }
+
+        .pet-photo {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 32px;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @media (min-width: 768px) { .pet-photo { height: 450px; } }
+        .pet-photo:hover { transform: scale(1.02); shadow: 0 30px 60px rgba(0,0,0,0.1); }
+
+        .app-icon { width: 32px; height: 32px; border-radius: 8px; }
+        .app-icon-large { width: 80px; height: 80px; border-radius: 20px; }
+
+        /* Smooth Reveal Animation */
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass px-4 md:px-8 py-4 border-b border-black/5">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="https://rustfs.petfriendly.icu/jiaxu-technology/120.png" class="app-icon" alt="PetFriendly Logo">
+                <span class="text-xl font-bold tracking-tight text-gray-800">PetFriendly <span class="hidden md:inline font-normal text-gray-400" data-i18n="nav-sub">宠物友好指南</span></span>
+            </div>
+            <div class="flex space-x-6 items-center">
+                <a href="#audience" class="hidden md:block text-sm font-semibold hover:text-[#76A665] transition-colors" data-i18n="nav-audience">适用人群</a>
+                <button onclick="toggleLang()" class="text-[10px] md:text-xs font-black border border-gray-200 px-3 py-1 rounded-full hover:bg-gray-50 font-mono">EN/中</button>
+                <a href="#download" class="interactive-btn px-6 py-2.5 bg-black text-white rounded-full text-[10px] md:text-xs font-bold" data-i18n="nav-cta">获取公测</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex flex-col items-center justify-center px-6 pt-24 pb-12 overflow-hidden">
+        <div class="z-10 text-center space-y-10 max-w-5xl">
+            <div class="reveal-item native-badge mx-auto" data-i18n="badge-native">100% Native Design</div>
+            <h1 class="reveal-item reveal-delay-1 text-5xl md:text-9xl font-bold tracking-tighter text-[#2D2D2D] leading-[1.05]" data-i18n="hero-title">
+                代码构建无碍，<br><span class="text-[#76A665]">AI 洞悉温情</span>
+            </h1>
+            <p class="reveal-item reveal-delay-2 text-xl md:text-3xl font-light text-gray-400" data-i18n="hero-sub">
+                Planting a patch of friendly turf. <span class="font-mono text-[#76A665]">i see you.icu</span>
+            </p>
+
+            <div class="reveal-item reveal-delay-3 flex flex-col md:flex-row items-center justify-center gap-6 pt-6">
+                <a href="#download" class="interactive-btn w-full md:w-auto bg-[#76A665] px-12 py-5 text-white rounded-2xl font-bold text-lg shadow-2xl shadow-green-100" data-i18n="btn-testflight">
+                    申请 TestFlight 内测
+                </a>
+                <a href="#audience" class="interactive-btn w-full md:w-auto bg-white border border-gray-200 px-12 py-5 rounded-2xl font-bold text-lg shadow-sm" data-i18n="btn-audience">
+                    适用人群
+                </a>
+            </div>
+
+            <!-- Mock Terminal -->
+            <div class="reveal-item reveal-delay-3 mt-16 md:mt-20 bg-white/40 backdrop-blur-xl border border-[#E0E0D8] rounded-[2rem] p-6 md:p-10 shadow-2xl inline-block text-left w-full max-w-2xl mx-auto border-white/50">
+                <div id="terminal" class="font-mono text-[11px] md:text-sm space-y-2 min-h-[140px] text-gray-500 leading-relaxed">
+                    <!-- Logs will be injected here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-[calc(140%+1.3px)] h-[100px] md:h-[180px] turf-wave">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.43,151.15,136.36,231.51,116.32,279.35,104.37,300.9,78.89,321.39,56.44Z"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Audience Section -->
+    <section id="audience" class="section-container">
+        <div class="text-center mb-16 space-y-4">
+            <h2 class="reveal-item text-4xl md:text-6xl font-bold tracking-tight text-gray-900" data-i18n="aud-title">为谁而建</h2>
+            <p class="reveal-item text-xl text-gray-400 font-light" data-i18n="aud-sub">连接宠物友好生态中的每一个角色</p>
+        </div>
+        <div class="audience-grid">
+            <div class="reveal-item audience-card"><div class="text-4xl mb-4">🏠</div><div class="font-bold text-sm" data-i18n="aud-1">养宠家庭</div></div>
+            <div class="reveal-item audience-card reveal-delay-1"><div class="text-4xl mb-4">❤️</div><div class="font-bold text-sm" data-i18n="aud-2">爱宠人士</div></div>
+            <div class="reveal-item audience-card reveal-delay-2"><div class="text-4xl mb-4">🏥</div><div class="font-bold text-sm" data-i18n="aud-3">宠物医院</div></div>
+            <div class="reveal-item audience-card reveal-delay-3"><div class="text-4xl mb-4">🛍️</div><div class="font-bold text-sm" data-i18n="aud-4">友好商店</div></div>
+            <div class="reveal-item audience-card"><div class="text-4xl mb-4">🍽️</div><div class="font-bold text-sm" data-i18n="aud-5">友好餐厅</div></div>
+            <div class="reveal-item audience-card reveal-delay-1"><div class="text-4xl mb-4">🥐</div><div class="font-bold text-sm" data-i18n="aud-6">面包店</div></div>
+            <div class="reveal-item audience-card reveal-delay-2"><div class="text-4xl mb-4">☕</div><div class="font-bold text-sm" data-i18n="aud-7">咖啡店</div></div>
+            <div class="reveal-item audience-card reveal-delay-3"><div class="text-4xl mb-4">🐈</div><div class="font-bold text-sm" data-i18n="aud-8">撸猫馆</div></div>
+            <div class="reveal-item audience-card"><div class="text-4xl mb-4">🏃</div><div class="font-bold text-sm" data-i18n="aud-9">跑步爱好者</div></div>
+            <div class="reveal-item audience-card reveal-delay-1"><div class="text-4xl mb-4">🥾</div><div class="font-bold text-sm" data-i18n="aud-10">徒步爱好者</div></div>
+            <div class="reveal-item audience-card reveal-delay-2"><div class="text-4xl mb-4">🏊</div><div class="font-bold text-sm" data-i18n="aud-11">游泳爱好者</div></div>
+            <div class="reveal-item audience-card reveal-delay-3"><div class="text-4xl mb-4">🚗</div><div class="font-bold text-sm" data-i18n="aud-12">宠物友好司机</div></div>
+        </div>
+    </section>
+
+    <!-- Platforms Section -->
+    <section id="download" class="bg-white py-32 px-6">
+        <div class="max-w-7xl mx-auto space-y-24">
+            <!-- iOS Banner -->
+            <div class="reveal-item ios-banner flex flex-col lg:flex-row items-center justify-between gap-12">
+                <div class="flex-1 space-y-8 text-center lg:text-left">
+                    <div class="flex flex-col lg:flex-row items-center gap-6">
+                        <img src="https://rustfs.petfriendly.icu/jiaxu-technology/120.png" class="app-icon-large" alt="PetFriendly App Icon">
+                        <div>
+                            <div class="flex items-center justify-center lg:justify-start gap-2 mb-2">
+                                <span class="text-xs font-black uppercase tracking-[0.2em] text-[#76A665]" data-i18n="plat-status-now">现已推出</span>
+                                <span class="native-badge">SwiftUI Native</span>
+                            </div>
+                            <h4 class="text-4xl md:text-7xl font-black tracking-tighter" data-i18n="plat-ios-name">PetFriendly for iOS</h4>
+                        </div>
+                    </div>
+                    <p class="text-xl md:text-2xl text-gray-500 max-w-2xl leading-relaxed" data-i18n="plat-ios-desc-long">
+                        首个原生 AI 宠物友好指南。支持实况组件、灵动岛交互与 AI Housekeeper 核心协议。
+                    </p>
+                </div>
+                
+                <div class="w-full md:w-[450px] space-y-6 bg-[#F9F9F7] p-8 md:p-12 rounded-[2.5rem]">
+                    <div id="ios-form-wrap" class="space-y-4 hidden">
+                        <input type="email" id="ios-email" placeholder="输入邮箱" data-i18n-placeholder="input-email-ph" class="w-full px-6 py-5 rounded-2xl border-2 border-transparent outline-none focus:border-[#76A665] transition-all text-lg shadow-inner">
+                    </div>
+                    <button onclick="submitIOSApply()" id="ios-btn" class="interactive-btn w-full py-6 bg-[#76A665] text-white rounded-2xl font-bold text-xl shadow-2xl shadow-green-200" data-i18n="btn-invite">立即申请</button>
+                    <p class="text-center text-xs text-gray-400 font-black tracking-[0.3em] uppercase">TestFlight Public Beta</p>
+                </div>
+            </div>
+
+            <!-- Other Platforms -->
+            <div class="space-y-12">
+                <div class="flex justify-between items-end border-b border-gray-100 pb-6">
+                    <div>
+                        <h5 class="text-sm font-black uppercase tracking-[0.4em] text-gray-400 mb-2" data-i18n="plat-more-title">多端原生计划</h5>
+                        <p class="text-xs text-gray-300 font-bold uppercase tracking-[0.1em]">Better Optimization, Superior Experience</p>
+                    </div>
+                    <button onclick="revealPlatforms()" id="revealBtn" class="text-xs font-black border-b-2 border-black hover:text-[#76A665] hover:border-[#76A665] transition-all pb-1 uppercase" data-i18n="plat-btn">View More</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div id="p-android" class="platform-card-future glass p-10 rounded-[2.5rem] flex flex-col items-center text-center space-y-6">
+                        <div class="text-5xl">🤖</div>
+                        <h4 class="text-2xl font-bold">Android Native</h4>
+                        <div class="native-badge">Kotlin Native</div>
+                        <p class="text-sm text-gray-400 leading-relaxed" data-i18n="plat-and-desc">计划于 2026 Q3 开启内测。</p>
+                    </div>
+                    <div id="p-harmony" class="platform-card-future glass p-10 rounded-[2.5rem] flex flex-col items-center text-center space-y-6">
+                        <div class="text-5xl">🦋</div>
+                        <h4 class="text-2xl font-bold">HarmonyOS</h4>
+                        <div class="native-badge">ArkUI Native</div>
+                        <p class="text-sm text-gray-400 leading-relaxed" data-i18n="plat-har-desc">原生鸿蒙适配，多端协同体验。</p>
+                    </div>
+                    <div id="p-mini" class="platform-card-future glass p-10 rounded-[2.5rem] flex flex-col items-center text-center space-y-6">
+                        <div class="text-5xl">💬</div>
+                        <h4 class="text-2xl font-bold" data-i18n="plat-mini-name">小程序</h4>
+                        <div class="native-badge">Cloud Native</div>
+                        <p class="text-sm text-gray-400 leading-relaxed" data-i18n="plat-mini-desc">微信、抖音轻量应用场景。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section id="story" class="section-container bg-[#FDFDFB] rounded-[4rem] my-20 mx-4 md:mx-auto shadow-sm border border-gray-50">
+        <div class="grid md:grid-cols-2 gap-12 md:gap-20 mb-20 md:mb-32">
+            <div class="reveal-item space-y-4">
+                <img src="https://rustfs.petfriendly.icu/jiaxu-technology/2025/12/08/a75a27b0bb024143a8e9739921311532.png" class="pet-photo shadow-2xl" alt="山竹">
+                <p class="text-center font-black text-xs text-gray-300 tracking-[0.2em]" data-i18n="pet-shanzhu">美短猫姐姐 · 山竹</p>
+            </div>
+            <div class="reveal-item reveal-delay-2 space-y-4">
+                <img src="https://rustfs.petfriendly.icu/jiaxu-technology/DSC_0019.jpg" class="pet-photo shadow-2xl" alt="当当">
+                <p class="text-center font-black text-xs text-gray-300 tracking-[0.2em]" data-i18n="pet-dangdang">史宾格臭弟弟 · 当当</p>
+            </div>
+        </div>
+
+        <div class="max-w-5xl mx-auto space-y-16">
+            <div class="reveal-item text-center space-y-6">
+                <h2 class="text-4xl md:text-6xl font-black tracking-tight" data-i18n="story-title">初心 · 愿景 · 未来</h2>
+                <div class="h-1.5 w-24 bg-[#76A665] mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="reveal-item space-y-5 text-center md:text-left">
+                    <h5 class="text-[#76A665] font-black text-xs uppercase tracking-[0.4em]" data-i18n="story-mission-label">初心</h5>
+                    <p class="text-base text-gray-500 leading-loose font-light" data-i18n="story-mission-text">为了让当当和山竹，以及千千万万像它们一样的生命，能在这座城市里走得更远，被更多地方温柔接纳。</p>
+                </div>
+                <div class="reveal-item reveal-delay-1 space-y-5 text-center md:text-left">
+                    <h5 class="text-[#76A665] font-black text-xs uppercase tracking-[0.4em]" data-i18n="story-vision-label">愿景</h5>
+                    <p class="text-base text-gray-500 leading-loose font-light" data-i18n="story-vision-text">用代码消除隔阂，用 AI 洞悉温情，构建全球领先的宠物友好数字基础设施。</p>
+                </div>
+                <div class="reveal-item reveal-delay-2 space-y-5 text-center md:text-left">
+                    <h5 class="text-[#76A665] font-black text-xs uppercase tracking-[0.4em]" data-i18n="story-future-label">未来</h5>
+                    <p class="text-base text-gray-500 leading-loose font-light" data-i18n="story-future-text">每一处草坪，每一间店面，每一个灵魂，都将紧密相连。让“友好”成为城市的原生协议。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 bg-white border-t border-gray-100 text-center px-6">
+        <div class="max-w-7xl mx-auto space-y-10">
+            <div class="flex items-center justify-center space-x-3">
+                <img src="https://rustfs.petfriendly.icu/jiaxu-technology/120.png" class="app-icon" style="width: 28px; height: 24px; border-radius: 6px;">
+                <span class="text-2xl font-bold tracking-tighter">PetFriendly</span>
+            </div>
+            <p class="text-gray-400 text-[11px] font-mono tracking-[0.3em] uppercase">
+                &copy; 2026 PETFRIENDLY. <span class="text-[#76A665]">ICU</span> <br class="md:hidden"> 100% NATIVE DESIGNED & DEVELOPED.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const translations = {
+            'zh': {
+                'nav-sub': '宠物友好指南', 'nav-audience': '适用人群', 'nav-platforms': '多端计划', 'nav-story': '故事', 'nav-cta': '获取公测',
+                'badge-native': '100% 原生设计开发', 'hero-title': '代码构建无碍，<br><span class="text-[#76A665]">AI 洞悉温情</span>',
+                'hero-sub': 'Planting a patch of friendly turf. <span class="font-mono text-[#76A665]">i see you.icu</span>',
+                'btn-testflight': '申请 TestFlight 内测', 'btn-audience': '适用人群',
+                'aud-title': '为谁而建', 'aud-sub': '连接宠物友好生态中的每一个角色',
+                'aud-1': '养宠家庭', 'aud-2': '爱宠人士', 'aud-3': '宠物医院', 'aud-4': '友好商店',
+                'aud-5': '友好餐厅', 'aud-6': '面包店', 'aud-7': '咖啡店', 'aud-8': '撸猫馆',
+                'aud-9': '跑步爱好者', 'aud-10': '徒步爱好者', 'aud-11': '游泳爱好者', 'aud-12': '宠物友好司机',
+                'plat-title': '多端发布矩阵', 'plat-status-now': '现已推出', 'plat-ios-name': 'PetFriendly for iOS',
+                'plat-ios-desc-long': '首个原生 AI 宠物友好指南。支持实况组件、灵动岛交互与 AI Housekeeper 核心协议。',
+                'plat-more-title': '多端原生计划', 'plat-btn': '查看全部计划', 'plat-status-dev': '构建中', 'plat-status-plan': '规划中',
+                'plat-and-desc': '计划于 2026 Q3 开启内测。', 'plat-har-desc': '原生鸿蒙适配，多端协同体验。',
+                'plat-mini-name': '小程序', 'plat-mini-desc': '微信、抖音轻量应用场景。',
+                'btn-invite': '立即申请', 'btn-submit': '发送申请', 'input-email-ph': '输入邮箱',
+                'pet-shanzhu': '美短猫姐姐 · 山竹', 'pet-dangdang': '史宾格臭弟弟 · 当当',
+                'story-title': '初心 · 愿景 · 未来', 'story-mission-label': '初心',
+                'story-mission-text': '为了让当当和山竹，以及千千万万像它们一样的生命，能在这座城市里走得更远，被更多地方温柔接纳。',
+                'story-vision-label': '愿景', 'story-vision-text': '用代码消除隔阂，用 AI 洞悉温情，构建全球领先的宠物友好数字基础设施。',
+                'story-future-label': '未来', 'story-future-text': '每一处草坪，每一间店面，每一个灵魂，都将紧密相连。让“友好”成为城市的原生协议。'
+            },
+            'en': {
+                'nav-sub': 'Turf', 'nav-audience': 'Audience', 'nav-platforms': 'Platforms', 'nav-story': 'Story', 'nav-cta': 'Get Beta',
+                'badge-native': '100% Native Design & Dev', 'hero-title': 'Seamless Code,<br><span class="text-[#76A665]">AI Insights with Warmth</span>',
+                'hero-sub': 'Planting a patch of friendly turf. <span class="font-mono text-[#76A665]">i see you.icu</span>',
+                'btn-testflight': 'Apply for TestFlight', 'btn-audience': 'Target Audience',
+                'aud-title': 'Built For', 'aud-sub': 'Connecting every role in the pet-friendly ecosystem',
+                'aud-1': 'Pet Owners', 'aud-2': 'Pet Lovers', 'aud-3': 'Pet Hospitals', 'aud-4': 'Pet Shops',
+                'aud-5': 'Pet Restaurants', 'aud-6': 'Bakery', 'aud-7': 'Cafe', 'aud-8': 'Cat Cafe',
+                'aud-9': 'Runners', 'aud-10': 'Hikers', 'aud-11': 'Swimmers', 'aud-12': 'Pet-friendly Drivers',
+                'plat-title': 'Multi-platform Roadmap', 'plat-status-now': 'Now Available', 'plat-ios-name': 'PetFriendly for iOS',
+                'plat-ios-desc-long': 'The first native AI pet-friendly guide. Supports Live Activities, Dynamic Island, and AI Housekeeper protocol.',
+                'plat-more-title': 'Native Roadmap', 'plat-btn': 'View All Plans', 'plat-status-dev': 'Building', 'plat-status-plan': 'Planned',
+                'plat-and-desc': 'Internal beta planned for 2026 Q3.', 'plat-har-desc': 'Native HarmonyOS adaptation for multi-device synergy.',
+                'plat-mini-name': 'Mini-Apps', 'plat-mini-desc': 'Lightweight solutions for WeChat and TikTok.',
+                'btn-invite': 'Join Now', 'btn-submit': 'Submit', 'input-email-ph': 'Enter Email',
+                'pet-shanzhu': 'American Shorthair - Shanzhu', 'pet-dangdang': 'Springer Spaniel - Dangdang',
+                'story-title': 'Mission · Vision · Future', 'story-mission-label': 'Mission',
+                'story-mission-text': 'To enable Dangdang, Shanzhu, and millions like them to explore further and be warmly accepted in every corner of the city.',
+                'story-vision-label': 'Vision', 'story-vision-text': 'Bridging gaps with code and sensing warmth with AI, building the world\'s leading pet-friendly digital infrastructure.',
+                'story-future-label': 'Future', 'story-future-text': 'Every patch of turf, every storefront, and every soul will be closely connected. Making "friendliness" the native protocol of the city.'
+            }
+        };
+
+        let currentLang = 'zh';
+        function updateContent() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) el.innerHTML = translations[currentLang][key];
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[currentLang][key]) el.placeholder = translations[currentLang][key];
+            });
+            document.title = currentLang === 'zh' ? 'PetFriendly 宠物友好指南 - AI 智能体宠物友好指南' : 'PetFriendly Turf - AI Pet-Friendly Guide';
+            const btn = document.getElementById('ios-btn'), formWrap = document.getElementById('ios-form-wrap');
+            if (!formWrap.classList.contains('hidden')) btn.innerHTML = translations[currentLang]['btn-submit'];
+        }
+
+        function toggleLang() { currentLang = currentLang === 'zh' ? 'en' : 'zh'; updateContent(); }
+
+        function submitIOSApply() {
+            const btn = document.getElementById('ios-btn'), formWrap = document.getElementById('ios-form-wrap'), input = document.getElementById('ios-email');
+            if (formWrap.classList.contains('hidden')) {
+                formWrap.classList.remove('hidden'); input.focus(); btn.innerHTML = translations[currentLang]['btn-submit'];
+            } else {
+                const email = input.value;
+                if (email && email.includes('@')) {
+                    const subject = encodeURIComponent(currentLang === 'zh' ? "申请 PetFriendly TestFlight 内测" : "Apply for PetFriendly TestFlight");
+                    const zhBody = "我想领取宠物友好指南通行证并申请内测。\r\n\r\n申请人邮箱: " + email;
+                    const enBody = "I would like to apply for the PetFriendly TestFlight.\r\n\r\nApplicant Email: " + email;
+                    const body = encodeURIComponent(currentLang === 'zh' ? zhBody : enBody);
+                    window.location.href = "mailto:100petfriendly@gmail.com?subject=" + subject + "&body=" + body;
+                    formWrap.classList.add('hidden'); input.value = ''; btn.innerHTML = translations[currentLang]['btn-invite'];
+                } else {
+                    input.classList.add('border-red-400'); setTimeout(() => input.classList.remove('border-red-400'), 2000);
+                }
+            }
+        }
+
+        // Reveal Animation on Scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        window.addEventListener('load', () => {
+            const userLang = navigator.language || navigator.userLanguage;
+            currentLang = userLang.startsWith('en') ? 'en' : 'zh';
+            updateContent();
+            document.querySelectorAll('.reveal-item').forEach(el => observer.observe(el));
+            setTimeout(typeLog, 1000);
+        });
+
+        function revealPlatforms() {
+            ['p-android', 'p-harmony', 'p-mini'].forEach(id => document.getElementById(id).classList.add('active'));
+            document.getElementById('revealBtn').style.display = 'none';
+        }
+
+        const terminal = document.getElementById('terminal');
+        const logs = ['paws@petfriendly: system check','[OK] SwiftUI Native Engine Online.','[OK] Kotlin & ArkUI Roadmap Synced.','[OK] 100% Native Design Verified.','paws@petfriendly: initializing warmth...','-----------------------------------','Ready to see the world together.','i see you. _'];
+        let i = 0;
+        function typeLog() {
+            if (i < logs.length) {
+                const line = document.createElement('div');
+                line.className = 'opacity-0 translate-y-1 transition-all duration-700';
+                line.innerHTML = '<span class="text-[#76A665] font-black mr-3">$</span>' + logs[i];
+                terminal.appendChild(line);
+                line.offsetHeight;
+                line.classList.remove('opacity-0', 'translate-y-1');
+                i++;
+                setTimeout(typeLog, 800 + Math.random() * 400);
+            }
+        }
+    </script>
+</body>
+</html>
