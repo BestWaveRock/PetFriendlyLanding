@@ -125,7 +125,6 @@
         .app-icon { width: 32px; height: 32px; border-radius: 8px; }
         .app-icon-large { width: 80px; height: 80px; border-radius: 20px; }
 
-        /* Smooth Reveal Animation */
         .reveal-delay-1 { transition-delay: 0.1s; }
         .reveal-delay-2 { transition-delay: 0.2s; }
         .reveal-delay-3 { transition-delay: 0.3s; }
@@ -140,10 +139,11 @@
                 <img src="https://rustfs.petfriendly.icu/jiaxu-technology/120.png" class="app-icon" alt="PetFriendly Logo">
                 <span class="text-xl font-bold tracking-tight text-gray-800">PetFriendly <span class="hidden md:inline font-normal text-gray-400" data-i18n="nav-sub">宠物友好指南</span></span>
             </div>
-            <div class="flex space-x-6 items-center">
+            <div class="flex space-x-4 md:space-x-6 items-center">
                 <a href="#audience" class="hidden md:block text-sm font-semibold hover:text-[#76A665] transition-colors" data-i18n="nav-audience">适用人群</a>
-                <button onclick="toggleLang()" class="text-[10px] md:text-xs font-black border border-gray-200 px-3 py-1 rounded-full hover:bg-gray-50 font-mono">EN/中</button>
-                <a href="#download" class="interactive-btn px-6 py-2.5 bg-black text-white rounded-full text-[10px] md:text-xs font-bold" data-i18n="nav-cta">获取公测</a>
+                <a href="https://github.com/BestWaveRock/PetFriendlyLanding" target="_blank" class="hidden md:block text-sm font-semibold hover:text-[#76A665] transition-colors" data-i18n="nav-github">开源代码</a>
+                <button onclick="toggleLang()" class="text-[10px] md:text-xs font-black border border-gray-200 px-3 py-1 rounded-full hover:bg-gray-50 font-mono uppercase">EN/中</button>
+                <a href="#download" class="interactive-btn px-5 md:px-6 py-2.5 bg-black text-white rounded-full text-[10px] md:text-xs font-bold shadow-xl shadow-black/10" data-i18n="nav-cta">获取公测</a>
             </div>
         </div>
     </nav>
@@ -246,7 +246,7 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div id="p-android" class="platform-card-future glass p-10 rounded-[2.5rem] flex flex-col items-center text-center space-y-6">
-                        <div class="text-5xl">🤖</div>
+                        <div class="text-4xl">🤖</div>
                         <h4 class="text-2xl font-bold">Android Native</h4>
                         <div class="native-badge">Kotlin Native</div>
                         <p class="text-sm text-gray-400 leading-relaxed" data-i18n="plat-and-desc">计划于 2026 Q3 开启内测。</p>
@@ -310,6 +310,10 @@
             <div class="flex items-center justify-center space-x-3">
                 <img src="https://rustfs.petfriendly.icu/jiaxu-technology/120.png" class="app-icon" style="width: 28px; height: 24px; border-radius: 6px;">
                 <span class="text-2xl font-bold tracking-tighter">PetFriendly</span>
+            </div>
+            <div class="flex justify-center space-x-8 text-xs font-black uppercase tracking-[0.2em]">
+                <a href="https://github.com/BestWaveRock/PetFriendlyLanding" target="_blank" class="hover:text-[#76A665] transition-colors">GitHub</a>
+                <a href="mailto:100petfriendly@gmail.com" class="hover:text-[#76A665] transition-colors">Contact</a>
             </div>
             <p class="text-gray-400 text-[11px] font-mono tracking-[0.3em] uppercase">
                 &copy; 2026 PETFRIENDLY. <span class="text-[#76A665]">ICU</span> <br class="md:hidden"> 100% NATIVE DESIGNED & DEVELOPED.
@@ -399,11 +403,8 @@
             }
         }
 
-        // Reveal Animation on Scroll
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
-            });
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
         }, { threshold: 0.1 });
 
         window.addEventListener('load', () => {
