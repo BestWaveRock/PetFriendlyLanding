@@ -309,7 +309,7 @@
         <div class="max-w-7xl mx-auto space-y-10">
             <div class="flex items-center justify-center space-x-3">
                 <img src="https://rustfs.petfriendly.icu/jiaxu-technology/120.png" class="app-icon" style="width: 28px; height: 24px; border-radius: 6px;">
-                <span class="text-2xl font-bold tracking-tighter">PetFriendly</span>
+                <span class="text-2xl font-bold tracking-tighter" data-i18n="nav-logo-text">PetFriendly</span>
             </div>
             <div class="flex justify-center space-x-8 text-xs font-black uppercase tracking-[0.2em]">
                 <a href="https://github.com/BestWaveRock/PetFriendlyLanding" target="_blank" class="hover:text-[#76A665] transition-colors">GitHub</a>
@@ -332,7 +332,7 @@
                 'aud-1': '养宠家庭', 'aud-2': '爱宠人士', 'aud-3': '宠物医院', 'aud-4': '友好商店',
                 'aud-5': '友好餐厅', 'aud-6': '面包店', 'aud-7': '咖啡店', 'aud-8': '撸猫馆',
                 'aud-9': '跑步爱好者', 'aud-10': '徒步爱好者', 'aud-11': '游泳爱好者', 'aud-12': '宠物友好司机',
-                'plat-title': '多端发布矩阵', 'plat-status-now': '现已推出', 'plat-ios-name': 'PetFriendly for iOS',
+                'plat-title': '多端发布矩阵', 'plat-status-now': '现已推出', 'plat-ios-name': '宠物友好指南 iOS 版',
                 'plat-ios-desc-long': '首个原生 AI 宠物友好指南。支持实况组件、灵动岛交互与 AI Housekeeper 核心协议。',
                 'plat-more-title': '多端原生计划', 'plat-btn': '查看全部计划', 'plat-status-dev': '构建中', 'plat-status-plan': '规划中',
                 'plat-and-desc': '计划于 2026 Q3 开启内测。', 'plat-har-desc': '原生鸿蒙适配，多端协同体验。',
@@ -377,7 +377,7 @@
                 const key = el.getAttribute('data-i18n-placeholder');
                 if (translations[currentLang][key]) el.placeholder = translations[currentLang][key];
             });
-            document.title = currentLang === 'zh' ? 'PetFriendly 宠物友好指南 - AI 智能体宠物友好指南' : 'PetFriendly Turf - AI Pet-Friendly Guide';
+            document.title = currentLang === 'zh' ? '宠物友好指南 - AI 宠物友好智能体' : 'PetFriendly Turf - AI Pet-Friendly Guide';
             const btn = document.getElementById('ios-btn'), formWrap = document.getElementById('ios-form-wrap');
             if (!formWrap.classList.contains('hidden')) btn.innerHTML = translations[currentLang]['btn-submit'];
         }
@@ -391,7 +391,7 @@
             } else {
                 const email = input.value;
                 if (email && email.includes('@')) {
-                    const subject = encodeURIComponent(currentLang === 'zh' ? "申请 PetFriendly TestFlight 内测" : "Apply for PetFriendly TestFlight");
+                    const subject = encodeURIComponent(currentLang === 'zh' ? "申请宠物友好指南 TestFlight 内测" : "Apply for PetFriendly TestFlight");
                     const zhBody = "我想领取宠物友好指南通行证并申请内测。\r\n\r\n申请人邮箱: " + email;
                     const enBody = "I would like to apply for the PetFriendly TestFlight.\r\n\r\nApplicant Email: " + email;
                     const body = encodeURIComponent(currentLang === 'zh' ? zhBody : enBody);
